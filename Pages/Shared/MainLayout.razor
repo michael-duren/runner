@@ -3,9 +3,11 @@
 <PageTitle>@AppName</PageTitle>
 
 <CascadingValue Value="this">
-    <NavMenu/>
-    <main class="container  px-6 max-w-6xl mx-auto py-12">
-        <button></button>
-        @Body
-    </main>
+    <div class="dark:bg-slate-900 bg-slate-200 flex flex-col h-screen transition-colors duration-300">
+        <NavMenu/>
+        <main class="container w-full h-full  px-6  mx-auto py-12">
+            @Body
+        </main>
+        <Footer/>
+    </div>
 </CascadingValue>

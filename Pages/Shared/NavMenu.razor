@@ -20,13 +20,13 @@
                 </a>
             </li>
         </ul>
-        <ul class="flex-wrap items-center w-auto hidden md:flex space-x-4">
+        <ul class="flex-wrap  items-center w-auto hidden md:flex space-x-4">
             <AuthorizeView>
                 <Authorized>
                     <!-- Profile dropdown -->
                     <div class="relative ml-3">
                         <div>
-                            <button x-on:click="desktopMenuOpen = true" type="button" class="inline-flex text-slate-900 items-center rounded-full bg-transparent" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                            <button x-on:click="desktopMenuOpen = true" type="button" class="inline-flex text-slate-900 dark:text-slate-50 items-center rounded-full bg-transparent" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                                 <span class="sr-only">Open user menu</span>
                                 @user.Name
                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -34,11 +34,11 @@
                                 </svg>
                             </button>
                         </div>
-                        <div x-cloak x-on:click.outside="desktopMenuOpen = false" x-show="desktopMenuOpen" class="absolute  right-0 z-50 mt-2 w-48 origin-top-right shadow-lg rounded-md bg-white py-1" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+                        <div x-cloak x-on:click.outside="desktopMenuOpen = false" x-show="desktopMenuOpen" class="absolute dark:bg-slate-700  right-0 z-50 mt-2 w-48 origin-top-right shadow-lg rounded-md bg-white py-1" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
                             <div>
-                                <a href="/dashboard" @click="desktopMenuOpen = false" class="block p-4 hover:bg-gray-100" role="menuitem">Dashboard</a>
-                                <a href="/profile/edit" @click="desktopMenuOpen = false" class="block p-4 hover:bg-gray-100" role="menuitem">Profile</a>
-                                <a href="/logout" @click="desktopMenuOpen = false" class="block p-4 hover:bg-gray-100" role="menuitem">Logout</a>
+                                <a href="/dashboard" @click="desktopMenuOpen = false" class="block p-4 hover:bg-gray-100 dark:hover:bg-slate-500" role="menuitem">Dashboard</a>
+                                <a href="/profile/edit" @click="desktopMenuOpen = false" class="block p-4 hover:bg-gray-100 dark:hover:bg-slate-500" role="menuitem">Profile</a>
+                                <a href="/logout" @click="desktopMenuOpen = false" class="block p-4 hover:bg-gray-100 dark:hover:bg-slate-500" role="menuitem">Logout</a>
                                 <p class="text-sm py-2 px-4 border-t">@user.Name</p>
                             </div>
                         </div>
