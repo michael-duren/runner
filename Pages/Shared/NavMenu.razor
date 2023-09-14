@@ -1,5 +1,7 @@
 ﻿@using Runner.Application.Services.Theme
 @inject AppTheme theme
+@inject IJSRuntime js
+@inject ILogger<NavMenu> logger
 
 <nav class="container w-full  mx-auto px-6" x-data="{ desktopMenuOpen: false, mobileMenuOpen: false }">
     <div class="flex justify-between items-center">
@@ -49,7 +51,13 @@
                         <a class="text-lg font-medium text-indigo-600 hover:text-indigo-700" href="/login">Login</a>
                     </li>
                     <li class="px-2 py-4">
-                        <a class="px-3 py-4 text-slate-50 text-lg bg-indigo-600 hover:bg-indigo-700  rounded-md font-medium" href="/register">Register</a>
+                        <a class="" href="/register">
+                            <MainButton>
+                                <ChildContent>
+                                    Register
+                                </ChildContent>
+                            </MainButton>
+                        </a>
                     </li>
                 </NotAuthorized>
             </AuthorizeView>
@@ -84,8 +92,34 @@
 </nav>
 
 @code {
-    private void ToggleTheme()
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var storedPreference = await js.InvokeAsync<string?>("loadThemePreference");
+            if (storedPreference is not null)
+            {
+                logger.LogInformation($"Theme preference loaded from local storage: {storedPreference}");
+                theme.IsDarkMode = storedPreference == "dark";
+            }
+            else
+            {
+                theme.IsDarkMode = await theme.IsBrowserDarkMode();
+            }
+            await theme.ListenForThemeChanges();
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        theme.OnChange += StateHasChanged;
+    }
+
+    private async void ToggleTheme()
     {
         theme.IsDarkMode = !theme.IsDarkMode;
+        theme.SaveThemePreference();
     }
+
 }
