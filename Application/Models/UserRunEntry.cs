@@ -13,7 +13,11 @@ public class UserRunEntry
     public double? Time { get; set; }
     public double? AveragePace { get; set; }
     public string? Notes { get; set; }
+    public bool Race { get; set; }
 
     [ForeignKey("UserSchedule")] public int UserScheduleId { get; set; }
     public UserSchedule UserSchedule { get; set; } = null!;
+
+    // navigation property    
+    public ICollection<UserRunEntryRunType> UserRunEntryRunTypes { get; set; } = null!;
 }
