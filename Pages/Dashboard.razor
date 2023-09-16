@@ -3,13 +3,75 @@
 
 <PageTitle>Dashboard</PageTitle>
 
-<section class="mx-auto max-w-6xl mb-20">
-    <h1 class="text-2xl text-gray-800 font-bold mb-4">
-        Dashboard
-    </h1>
-    <article class="bg-white shadow rounded-lg w-full my-12 p-6">
-        <p class="text-gray-600">
-            You're logged in!
-        </p>
-    </article>
-</section>
+
+<div class="flex flex-col gap-y-8 w-full">
+
+    <div class="flex flex-col gap-y-4">
+        <h1 class="text-2xl text-gray-600 dark:text-slate-300 font-bold ">
+            User Dashboard
+        </h1>
+        <div>
+            <p class="text-gray-600 dark:text-slate-500">
+                Welcome to your dashboard. Here you can view your runs, goals, and other information.
+            </p>
+        </div>
+    </div>
+    <div class="grid flex-1 grid-cols-12 w-full h-full text-gray-600 dark:text-slate-300  mb-10">
+        <aside class="col-span-3 flex flex-col   p-4">
+            <div class="flex items-center border-b-2 pb-6 dark:border-slate-700 border-slate-300  gap-x-8">
+                <div class="text-3xl rounded-full shadow-xl flex bg-gradient-to-r from-indigo-500 to-indigo-800 p-8  text-white">
+                    <i class="fa-solid fa-user-large"></i>
+                </div>
+                <div class="text-2xl">@user.Name</div>
+            </div>
+            <div class="mt-8 flex text-xl flex-col gap-x-4">
+                <button class="flex gap-2 items-center">
+                    <i class="fa-solid fa-book"></i>
+                    <div>
+                        New Journal
+                    </div>
+                </button>
+            </div>
+        </aside>
+        <section class=" flex col-span-9  flex-col h-full text-gray-600 dark:text-slate-300  mb-10">
+
+            <div class="grid grid-rows-3 gap-y-8  h-full rounded-lg w-full my-12 p-6">
+                @* // TODO: Add a new run button  *@
+                @* // run overview *@
+                <article class="flex flex-col gap-4">
+                    <div>
+                        <h2 class="text-xl  font-semibold">Upcoming Runs</h2>
+                    </div>
+                    <div class="flex flex-col shadow-xl dark:shadow-md dark:shadow-slate-800 bg-white dark:bg-slate-800 p-6 rounded-lg gap-4">
+                        <p class="text-gray-600 dark:text-slate-400">
+                            No runs yet. Get started by creating a new run.
+                        </p>
+                    </div>
+                </article>
+                @* // run history *@
+                <article class="flex flex-col gap-4">
+                    <div>
+                        <h2 class="text-xl  font-semibold">Previous Runs</h2>
+                    </div>
+                    <div class="flex flex-col shadow-xl dark:shadow-md dark:shadow-slate-800 bg-white dark:bg-slate-800 p-6 rounded-lg gap-4">
+                        <p class="text-gray-600 dark:text-slate-400">
+                            No runs yet. Get started by creating a new run.
+                        </p>
+                    </div>
+                </article>
+                @* // goals *@
+                <article class="flex flex-col gap-4">
+                    <div>
+                        <h2 class="text-xl font-semibold">Goals</h2>
+                    </div>
+                    <div class="flex flex-col shadow-xl dark:shadow-md dark:shadow-slate-800 bg-white dark:bg-slate-800 p-6 rounded-lg gap-4">
+                        <p class="text-gray-600 dark:text-slate-400">
+                            No Goals yet. Get started by creating a new goal.
+                        </p>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+    </div>
+</div>

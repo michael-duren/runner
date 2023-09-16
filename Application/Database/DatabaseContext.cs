@@ -12,6 +12,15 @@ public class DatabaseContext : DbContext
     public virtual DbSet<User> Users { set; get; }
     public virtual DbSet<Role> Roles { set; get; }
     public virtual DbSet<UserRole> UserRoles { get; set; }
+    
+    public virtual DbSet<DifficultyLevel> DifficultyLevels { get; set; }
+    public virtual DbSet<Goal> Goals { get; set; }
+    public virtual DbSet<JournalNote> JournalNotes { get; set; }
+    public virtual DbSet<RunType> RunTypes { get; set; }
+    public virtual DbSet<TemplateSchedule> TemplateSchedules { get; set; }
+    public virtual DbSet<UserGoal> UserGoals { get; set; }
+    public virtual DbSet<UserRunEntry> UserRunEntries { get; set; }
+    public virtual DbSet<UserSchedule> UserSchedules { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
