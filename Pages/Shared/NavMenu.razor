@@ -17,7 +17,7 @@
                 </button>
             </li>
             <li class="py-4">
-                <a href="/">
+                <a href="@(!string.IsNullOrEmpty(user.Name) ? "/dashboard" : "/")">
                     <ApplicationLogo/>
                 </a>
             </li>
@@ -39,6 +39,11 @@
                         <div x-cloak x-on:click.outside="desktopMenuOpen = false" x-show="desktopMenuOpen" class="absolute dark:bg-slate-800  right-0 z-50 mt-2 w-48 origin-top-right shadow-lg dark:shadow-slate-800 rounded-md bg-white py-1" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
                             <div>
                                 <a href="/dashboard" @click="desktopMenuOpen = false" class="block p-4 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-indigo-500" role="menuitem">Dashboard</a>
+                                <AuthorizeView Roles="@CustomRoles.Admin" Context="adminContext">
+                                    <Authorized>
+                                        <a href="/admin/dashboard" @click="desktopMenuOpen = false" class="block p-4 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-indigo-500" role="menuitem">Admin Dashboard</a>
+                                    </Authorized>
+                                </AuthorizeView>
                                 <a href="/profile/edit" @click="desktopMenuOpen = false" class="block p-4 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-indigo-500" role="menuitem">Profile</a>
                                 <a href="/logout" @click="desktopMenuOpen = false" class="block p-4 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-indigo-500" role="menuitem">Logout</a>
                                 <p class="text-sm dark:text-slate-300 py-2 px-4 dark:border-slate-700 border-t">@user.Name</p>

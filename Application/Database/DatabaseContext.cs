@@ -7,12 +7,14 @@ namespace Runner.Application.Database;
 public class DatabaseContext : DbContext
 {
     public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
-    { }
+    {
+    }
 
     public virtual DbSet<User> Users { set; get; }
     public virtual DbSet<Role> Roles { set; get; }
     public virtual DbSet<UserRole> UserRoles { get; set; }
-    
+
+    // running specific tables 
     public virtual DbSet<DifficultyLevel> DifficultyLevels { get; set; }
     public virtual DbSet<Goal> Goals { get; set; }
     public virtual DbSet<JournalNote> JournalNotes { get; set; }
@@ -55,6 +57,35 @@ public class DatabaseContext : DbContext
         builder.Entity<Role>().HasData(
             new Role { Id = 1, Name = CustomRoles.User },
             new Role { Id = 2, Name = CustomRoles.Admin }
+        );
+
+        /*
+         * Running specific mappings
+         */
+        // DifficultyLevel 
+        builder.Entity<DifficultyLevel>(entity =>
+        {
+            entity.Property(e => e.Difficulty).HasMaxLength(50).IsRequired();
+            entity.HasIndex(e => e.Difficulty).IsUnique();
+        });
+        builder.Entity<DifficultyLevel>().HasData(
+            new DifficultyLevel { Id = 1, Difficulty = "Beginner" },
+            new DifficultyLevel { Id = 2, Difficulty = "Intermediate" },
+            new DifficultyLevel { Id = 3, Difficulty = "Advanced" },
+            new DifficultyLevel { Id = 4, Difficulty = "Pro" }
+        );
+
+        // Goal
+        builder.Entity<Goal>(entity =>
+        {
+            entity.Property(e => e.GoalName).HasMaxLength(50).IsRequired();
+            entity.HasIndex(e => e.GoalName).IsUnique();
+        });
+        builder.Entity<Goal>().HasData(
+            new Goal { Id = 1, GoalName = "5K" },
+            new Goal { Id = 2, GoalName = "10K" },
+            new Goal { Id = 3, GoalName = "Half Marathon" },
+            new Goal { Id = 4, GoalName = "Marathon" }
         );
     }
 }

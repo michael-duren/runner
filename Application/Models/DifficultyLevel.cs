@@ -6,5 +6,5 @@ public class DifficultyLevel
 {
     [Key] public int Id { get; set; }
     // TODO: currently range from 1-5 (1 being easiest, 5 being hardest) need to come up with names for each level 
-    public int Difficulty { get; set; }
+    public string Difficulty { get; set; } = null!;
 }

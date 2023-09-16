@@ -11,7 +11,11 @@ public partial class Dashboard
 
     private List<Link> Links { get; set; } = new List<Link>
     {
-        new Link { Label = "New Journal", Url = "/journal", Icon = "fa-solid fa-book" }
+        new Link { Label = "Journal", Url = "/journal", Icon = "fa-solid fa-book" },
+        new Link { Label = "Schedule", Url = "/schedule", Icon = "fa-solid fa-calendar" },
+        new Link { Label = "Goals", Url = "/goals", Icon = "fa-solid fa-bullseye" },
+        new Link { Label = "Stats", Url = "/stats", Icon = "fa-solid fa-chart-bar" },
+        new Link { Label = "Settings", Url = "/settings", Icon = "fa-solid fa-cog" }
     };
 }
 
