@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Runner.Application.Database;
 
 #nullable disable
@@ -11,26 +12,32 @@ using Runner.Application.Database;
 namespace Runner.Application.Database.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230916233331_RunTables")]
-    partial class RunTables
+    [Migration("20230917115046_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "7.0.5");
+            modelBuilder
+                .HasAnnotation("ProductVersion", "7.0.5")
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("Runner.Application.Models.DifficultyLevel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Difficulty")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(50)")
                         .HasColumnName("difficulty");
 
                     b.HasKey("Id")
@@ -45,22 +52,22 @@ namespace Runner.Application.Database.Migrations
                     b.HasData(
                         new
                         {
-                            Id = -1,
+                            Id = 1,
                             Difficulty = "Beginner"
                         },
                         new
                         {
-                            Id = -2,
+                            Id = 2,
                             Difficulty = "Intermediate"
                         },
                         new
                         {
-                            Id = -3,
+                            Id = 3,
                             Difficulty = "Advanced"
                         },
                         new
                         {
-                            Id = -4,
+                            Id = 4,
                             Difficulty = "Pro"
                         });
                 });
@@ -69,13 +76,15 @@ namespace Runner.Application.Database.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("GoalName")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(50)")
                         .HasColumnName("goal_name");
 
                     b.HasKey("Id")
@@ -90,22 +99,22 @@ namespace Runner.Application.Database.Migrations
                     b.HasData(
                         new
                         {
-                            Id = -1,
+                            Id = 1,
                             GoalName = "5K"
                         },
                         new
                         {
-                            Id = -2,
+                            Id = 2,
                             GoalName = "10K"
                         },
                         new
                         {
-                            Id = -3,
+                            Id = 3,
                             GoalName = "Half Marathon"
                         },
                         new
                         {
-                            Id = -4,
+                            Id = 4,
                             GoalName = "Marathon"
                         });
                 });
@@ -114,25 +123,27 @@ namespace Runner.Application.Database.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("id");
 
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
                     b.Property<string>("Note")
                         .IsRequired()
-                        .HasColumnType("TEXT")
+                        .HasColumnType("text")
                         .HasColumnName("note");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("TEXT")
+                        .HasColumnType("text")
                         .HasColumnName("title");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("user_id");
 
                     b.HasKey("Id")
@@ -148,21 +159,23 @@ namespace Runner.Application.Database.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("id");
 
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(450)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(450)")
                         .HasColumnName("name");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
 
                     b.HasKey("Id")
@@ -193,17 +206,19 @@ namespace Runner.Application.Database.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("id");
 
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
                     b.Property<string>("Description")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("text")
                         .HasColumnName("description");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(50)")
                         .HasColumnName("name");
 
                     b.HasKey("Id")
@@ -218,61 +233,61 @@ namespace Runner.Application.Database.Migrations
                     b.HasData(
                         new
                         {
-                            Id = -1,
+                            Id = 1,
                             Description = "Non-weight-bearing aerobic activities such as aqua-jogging, swimming, or cycling. Be sure to perform them at conversation effort for 20-40 minutes.",
                             Name = "Cross-training"
                         },
                         new
                         {
-                            Id = -2,
+                            Id = 2,
                             Description = "Very relaxed effort over flat terrain (track or trail or walk the hills on your favorite route)",
                             Name = "Recovery Run"
                         },
                         new
                         {
-                            Id = -3,
+                            Id = 3,
                             Description = "After 2 mile warm-up (very relaxed effort), settle into conversation effort.",
                             Name = "Semi-Long Run"
                         },
                         new
                         {
-                            Id = -4,
+                            Id = 4,
                             Description = "After 2 mile warm-up (very relaxed effort), settle into conversation effort",
                             Name = "Long Run"
                         },
                         new
                         {
-                            Id = -5,
+                            Id = 5,
                             Description = "Find some hills on your route and stay relaxed on the uphills.",
                             Name = "Hilly Run"
                         },
                         new
                         {
-                            Id = -6,
+                            Id = 6,
                             Description = "8G (4-3-1) means go easy for 4 miles, 3 miles at goal pace, 1 mile cool down.",
                             Name = "Goal Pace Run"
                         },
                         new
                         {
-                            Id = -7,
+                            Id = 7,
                             Description = "7(5-1-1) means go easy for 5 miles, 1 mile at long fast pace, 1 mile cool down.",
                             Name = "Long Fast Run"
                         },
                         new
                         {
-                            Id = -8,
+                            Id = 8,
                             Description = "7SF: 6X800 means to perform a track workout of six 800 meter repeats.",
                             Name = "Short fast run"
                         },
                         new
                         {
-                            Id = -9,
+                            Id = 9,
                             Description = "The two workouts are interchangeable. Choose the ONE that fits your schedule.",
                             Name = "Or"
                         },
                         new
                         {
-                            Id = -10,
+                            Id = 10,
                             Description = "You can add this workout to the end of any of the other workouts. It is optional.",
                             Name = "And Optional"
                         });
@@ -282,13 +297,15 @@ namespace Runner.Application.Database.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(50)")
                         .HasColumnName("name");
 
                     b.HasKey("Id")
@@ -303,27 +320,27 @@ namespace Runner.Application.Database.Migrations
                     b.HasData(
                         new
                         {
-                            Id = -1,
+                            Id = 1,
                             Name = "Endurance"
                         },
                         new
                         {
-                            Id = -2,
+                            Id = 2,
                             Name = "Strength"
                         },
                         new
                         {
-                            Id = -3,
+                            Id = 3,
                             Name = "Speed"
                         },
                         new
                         {
-                            Id = -4,
+                            Id = 4,
                             Name = "Taper"
                         },
                         new
                         {
-                            Id = -5,
+                            Id = 5,
                             Name = "Recovery"
                         });
                 });
@@ -332,11 +349,13 @@ namespace Runner.Application.Database.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("id");
 
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
                     b.Property<int>("DayNumber")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("day_number");
 
                     b.Property<int>("Distance")
@@ -344,19 +363,19 @@ namespace Runner.Application.Database.Migrations
                         .HasColumnName("distance");
 
                     b.Property<bool>("Race")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("boolean")
                         .HasColumnName("race");
 
                     b.Property<int>("SchedulePhaseId")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("schedule_phase_id");
 
                     b.Property<int>("TemplateScheduleId")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("template_schedule_id");
 
                     b.Property<int>("WeekNumber")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("week_number");
 
                     b.HasKey("Id")
@@ -374,15 +393,15 @@ namespace Runner.Application.Database.Migrations
             modelBuilder.Entity("Runner.Application.Models.TemplateRunEntryRunType", b =>
                 {
                     b.Property<int>("TemplateRunId")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("template_run_id");
 
                     b.Property<int>("RunTypeId")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("run_type_id");
 
                     b.Property<int>("Id")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("id");
 
                     b.HasKey("TemplateRunId", "RunTypeId")
@@ -398,15 +417,17 @@ namespace Runner.Application.Database.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("id");
 
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
                     b.Property<int>("DifficultyLevelId")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("difficulty_level_id");
 
                     b.Property<int>("GoalId")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("goal_id");
 
                     b.HasKey("Id")
@@ -425,39 +446,41 @@ namespace Runner.Application.Database.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("id");
 
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(450)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(450)")
                         .HasColumnName("email");
 
                     b.Property<DateTime?>("EmailVerifiedAt")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("email_verified_at");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("TEXT")
+                        .HasColumnType("text")
                         .HasColumnName("name");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("TEXT")
+                        .HasColumnType("text")
                         .HasColumnName("password");
 
                     b.Property<string>("RememberToken")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("text")
                         .HasColumnName("remember_token");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
 
                     b.HasKey("Id")
@@ -474,29 +497,31 @@ namespace Runner.Application.Database.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("id");
 
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
                     b.Property<DateTime>("DueDate")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("due_date");
 
                     b.Property<string>("GoalDescription")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("text")
                         .HasColumnName("goal_description");
 
                     b.Property<int?>("GoalId")
                         .IsRequired()
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("goal_id");
 
                     b.Property<string>("GoalReason")
                         .IsRequired()
-                        .HasColumnType("TEXT")
+                        .HasColumnType("text")
                         .HasColumnName("goal_reason");
 
                     b.Property<int?>("UserId")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("user_id");
 
                     b.HasKey("Id")
@@ -514,11 +539,11 @@ namespace Runner.Application.Database.Migrations
             modelBuilder.Entity("Runner.Application.Models.UserRole", b =>
                 {
                     b.Property<int>("UserId")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("user_id");
 
                     b.Property<int>("RoleId")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("role_id");
 
                     b.HasKey("UserId", "RoleId")
@@ -537,43 +562,45 @@ namespace Runner.Application.Database.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("id");
 
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
                     b.Property<double?>("AveragePace")
-                        .HasColumnType("REAL")
+                        .HasColumnType("double precision")
                         .HasColumnName("average_pace");
 
                     b.Property<DateTime?>("DateCompleted")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("date_completed");
 
                     b.Property<DateTime>("DateScheduled")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("date_scheduled");
 
                     b.Property<double>("Distance")
-                        .HasColumnType("REAL")
+                        .HasColumnType("double precision")
                         .HasColumnName("distance");
 
                     b.Property<bool>("IsCompleted")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("boolean")
                         .HasColumnName("is_completed");
 
                     b.Property<string>("Notes")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("text")
                         .HasColumnName("notes");
 
                     b.Property<bool>("Race")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("boolean")
                         .HasColumnName("race");
 
                     b.Property<double?>("Time")
-                        .HasColumnType("REAL")
+                        .HasColumnType("double precision")
                         .HasColumnName("time");
 
                     b.Property<int>("UserScheduleId")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("user_schedule_id");
 
                     b.HasKey("Id")
@@ -588,15 +615,15 @@ namespace Runner.Application.Database.Migrations
             modelBuilder.Entity("Runner.Application.Models.UserRunEntryRunType", b =>
                 {
                     b.Property<int>("UserRunEntryId")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("user_run_entry_id");
 
                     b.Property<int>("RunTypeId")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("run_type_id");
 
                     b.Property<int>("Id")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("id");
 
                     b.HasKey("UserRunEntryId", "RunTypeId")
@@ -612,27 +639,29 @@ namespace Runner.Application.Database.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("id");
 
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
                     b.Property<int>("DifficultyLevelId")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("difficulty_level_id");
 
                     b.Property<DateTime>("EndDate")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("end_date");
 
                     b.Property<DateTime>("StartDate")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("start_date");
 
                     b.Property<int>("UserGoalId")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("user_goal_id");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("user_id");
 
                     b.HasKey("Id")

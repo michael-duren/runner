@@ -19,7 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Application\Database\Migrations\" />
 	<Folder Include="Storage\Logging\" />
   </ItemGroup>
 

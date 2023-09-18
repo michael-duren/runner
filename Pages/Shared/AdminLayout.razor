@@ -1,0 +1,76 @@
+@inject NavigationManager navigationManager
+@using Shared.Buttons
+<PageTitle>Admin Dashboard</PageTitle>
+
+<AuthorizeView Roles="@CustomRoles.Admin">
+    <Authorized>
+        <div>
+            <h1 class="text-2xl dark:text-slate-300 sm:text-4xl mb-8 ">
+                Admin Dashboard
+            </h1>
+        </div>
+        <div class="flex gap-8">
+            <aside class="">
+                <ul class="flex flex-col  h-full flex-1 text-gray-600 dark:text-slate-300  bg-white dark:bg-slate-800 p-6 rounded-lg gap-4">
+                    <li>
+                        <AdminSideNavButton OnClick="@NavigateToDashboard" Icon="fa-solid fa-table-columns" Title="Dashboard"/>
+                    </li>
+                    <li>
+                        <AdminSideNavButton OnClick="@NavigateToCreateSchedule" Icon="fa-solid fa-calendar-plus" Title="Create Schedule"/>
+                    </li>
+                    <li>
+                        <AdminSideNavButton OnClick="@NavigateToAllSchedules" Icon="fa-solid fa-calendar-days" Title="All Schedules"/>
+                    </li>
+                    <li>
+                        <AdminSideNavButton OnClick="@NavigateToUsers" Icon="fa-solid fa-user" Title="Users"/>
+                    </li>
+                    <li>
+                        <AdminSideNavButton OnClick="@NavigateToEditProfile" Icon="fa-solid fa-user-secret" Title="Edit Profile"/>
+                    </li>
+                </ul>
+            </aside>
+            <section class="flex flex-col text-sm h-full flex-1 text-gray-600 dark:text-slate-300  bg-white dark:bg-slate-800 p-6 rounded-lg gap-4">
+                @ChildContent
+            </section>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <section class="mx-auto max-w-6xl mb-20">
+            <div class="my-6 sm:my-20 px-6 py-12 sm:py-20 sm:px-12 text-center">
+                <p class="text-base sm:text-xl text-gray-600">Sorry, you do not have the proper permissions to access this page.</p>
+            </div>
+        </section>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = null!;
+
+    private void NavigateToDashboard()
+    {
+        navigationManager.NavigateTo(Routes.AdminDashboard);
+    }
+
+    private void NavigateToCreateSchedule()
+    {
+        navigationManager.NavigateTo(Routes.CreateSchedule);
+    }
+
+    private void NavigateToAllSchedules()
+    {
+        navigationManager.NavigateTo(Routes.AllSchedules);
+    }
+
+    private void NavigateToUsers()
+    {
+        navigationManager.NavigateTo(Routes.AllUsers);
+    }
+
+    private void NavigateToEditProfile()
+    {
+        navigationManager.NavigateTo(Routes.EditProfile);
+    }
+
+}

@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -8,28 +9,18 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Runner.Application.Database.Migrations
 {
     /// <inheritdoc />
-    public partial class RunTables : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DeleteData(
-                table: "roles",
-                keyColumn: "id",
-                keyValue: 1);
-
-            migrationBuilder.DeleteData(
-                table: "roles",
-                keyColumn: "id",
-                keyValue: 2);
-
             migrationBuilder.CreateTable(
                 name: "difficulty_levels",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    difficulty = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false)
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    difficulty = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -40,9 +31,9 @@ namespace Runner.Application.Database.Migrations
                 name: "goals",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    goal_name = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false)
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    goal_name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -50,35 +41,28 @@ namespace Runner.Application.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "journal_notes",
+                name: "roles",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    title = table.Column<string>(type: "TEXT", nullable: false),
-                    note = table.Column<string>(type: "TEXT", nullable: false),
-                    created_at = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    user_id = table.Column<int>(type: "INTEGER", nullable: false)
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    name = table.Column<string>(type: "character varying(450)", maxLength: 450, nullable: false),
+                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_journal_notes", x => x.id);
-                    table.ForeignKey(
-                        name: "fk_journal_notes_users_user_id",
-                        column: x => x.user_id,
-                        principalTable: "users",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                    table.PrimaryKey("pk_roles", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "run_types",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    name = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
-                    description = table.Column<string>(type: "TEXT", nullable: true)
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    description = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -89,9 +73,9 @@ namespace Runner.Application.Database.Migrations
                 name: "schedule_phases",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    name = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false)
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -99,13 +83,32 @@ namespace Runner.Application.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "users",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    name = table.Column<string>(type: "text", nullable: false),
+                    email = table.Column<string>(type: "character varying(450)", maxLength: 450, nullable: false),
+                    password = table.Column<string>(type: "text", nullable: false),
+                    remember_token = table.Column<string>(type: "text", nullable: true),
+                    email_verified_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_users", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "template_schedules",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    goal_id = table.Column<int>(type: "INTEGER", nullable: false),
-                    difficulty_level_id = table.Column<int>(type: "INTEGER", nullable: false)
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    goal_id = table.Column<int>(type: "integer", nullable: false),
+                    difficulty_level_id = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -125,16 +128,38 @@ namespace Runner.Application.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "journal_notes",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    title = table.Column<string>(type: "text", nullable: false),
+                    note = table.Column<string>(type: "text", nullable: false),
+                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    user_id = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_journal_notes", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_journal_notes_users_user_id",
+                        column: x => x.user_id,
+                        principalTable: "users",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "user_goals",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    due_date = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    goal_description = table.Column<string>(type: "TEXT", nullable: true),
-                    goal_reason = table.Column<string>(type: "TEXT", nullable: false),
-                    user_id = table.Column<int>(type: "INTEGER", nullable: true),
-                    goal_id = table.Column<int>(type: "INTEGER", nullable: false)
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    due_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    goal_description = table.Column<string>(type: "text", nullable: true),
+                    goal_reason = table.Column<string>(type: "text", nullable: false),
+                    user_id = table.Column<int>(type: "integer", nullable: true),
+                    goal_id = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -153,17 +178,41 @@ namespace Runner.Application.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "user_roles",
+                columns: table => new
+                {
+                    user_id = table.Column<int>(type: "integer", nullable: false),
+                    role_id = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_user_roles", x => new { x.user_id, x.role_id });
+                    table.ForeignKey(
+                        name: "fk_user_roles_roles_role_id",
+                        column: x => x.role_id,
+                        principalTable: "roles",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "fk_user_roles_users_user_id",
+                        column: x => x.user_id,
+                        principalTable: "users",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "template_runs",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    week_number = table.Column<int>(type: "INTEGER", nullable: false),
-                    day_number = table.Column<int>(type: "INTEGER", nullable: false),
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    week_number = table.Column<int>(type: "integer", nullable: false),
+                    day_number = table.Column<int>(type: "integer", nullable: false),
                     distance = table.Column<int>(type: "float", nullable: false),
-                    race = table.Column<bool>(type: "INTEGER", nullable: false),
-                    template_schedule_id = table.Column<int>(type: "INTEGER", nullable: false),
-                    schedule_phase_id = table.Column<int>(type: "INTEGER", nullable: false)
+                    race = table.Column<bool>(type: "boolean", nullable: false),
+                    template_schedule_id = table.Column<int>(type: "integer", nullable: false),
+                    schedule_phase_id = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -186,13 +235,13 @@ namespace Runner.Application.Database.Migrations
                 name: "user_schedules",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    start_date = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    end_date = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    user_id = table.Column<int>(type: "INTEGER", nullable: false),
-                    user_goal_id = table.Column<int>(type: "INTEGER", nullable: false),
-                    difficulty_level_id = table.Column<int>(type: "INTEGER", nullable: false)
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    start_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    end_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    user_id = table.Column<int>(type: "integer", nullable: false),
+                    user_goal_id = table.Column<int>(type: "integer", nullable: false),
+                    difficulty_level_id = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -221,9 +270,9 @@ namespace Runner.Application.Database.Migrations
                 name: "template_run_run_types",
                 columns: table => new
                 {
-                    template_run_id = table.Column<int>(type: "INTEGER", nullable: false),
-                    run_type_id = table.Column<int>(type: "INTEGER", nullable: false),
-                    id = table.Column<int>(type: "INTEGER", nullable: false)
+                    template_run_id = table.Column<int>(type: "integer", nullable: false),
+                    run_type_id = table.Column<int>(type: "integer", nullable: false),
+                    id = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -246,17 +295,17 @@ namespace Runner.Application.Database.Migrations
                 name: "user_run_entries",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    distance = table.Column<double>(type: "REAL", nullable: false),
-                    date_scheduled = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    date_completed = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    is_completed = table.Column<bool>(type: "INTEGER", nullable: false),
-                    time = table.Column<double>(type: "REAL", nullable: true),
-                    average_pace = table.Column<double>(type: "REAL", nullable: true),
-                    notes = table.Column<string>(type: "TEXT", nullable: true),
-                    race = table.Column<bool>(type: "INTEGER", nullable: false),
-                    user_schedule_id = table.Column<int>(type: "INTEGER", nullable: false)
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    distance = table.Column<double>(type: "double precision", nullable: false),
+                    date_scheduled = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    date_completed = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    is_completed = table.Column<bool>(type: "boolean", nullable: false),
+                    time = table.Column<double>(type: "double precision", nullable: true),
+                    average_pace = table.Column<double>(type: "double precision", nullable: true),
+                    notes = table.Column<string>(type: "text", nullable: true),
+                    race = table.Column<bool>(type: "boolean", nullable: false),
+                    user_schedule_id = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -273,9 +322,9 @@ namespace Runner.Application.Database.Migrations
                 name: "user_run_entry_run_type",
                 columns: table => new
                 {
-                    user_run_entry_id = table.Column<int>(type: "INTEGER", nullable: false),
-                    run_type_id = table.Column<int>(type: "INTEGER", nullable: false),
-                    id = table.Column<int>(type: "INTEGER", nullable: false)
+                    user_run_entry_id = table.Column<int>(type: "integer", nullable: false),
+                    run_type_id = table.Column<int>(type: "integer", nullable: false),
+                    id = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -299,10 +348,10 @@ namespace Runner.Application.Database.Migrations
                 columns: new[] { "id", "difficulty" },
                 values: new object[,]
                 {
-                    { -4, "Pro" },
-                    { -3, "Advanced" },
-                    { -2, "Intermediate" },
-                    { -1, "Beginner" }
+                    { 1, "Beginner" },
+                    { 2, "Intermediate" },
+                    { 3, "Advanced" },
+                    { 4, "Pro" }
                 });
 
             migrationBuilder.InsertData(
@@ -310,10 +359,10 @@ namespace Runner.Application.Database.Migrations
                 columns: new[] { "id", "goal_name" },
                 values: new object[,]
                 {
-                    { -4, "Marathon" },
-                    { -3, "Half Marathon" },
-                    { -2, "10K" },
-                    { -1, "5K" }
+                    { 1, "5K" },
+                    { 2, "10K" },
+                    { 3, "Half Marathon" },
+                    { 4, "Marathon" }
                 });
 
             migrationBuilder.InsertData(
@@ -330,16 +379,16 @@ namespace Runner.Application.Database.Migrations
                 columns: new[] { "id", "description", "name" },
                 values: new object[,]
                 {
-                    { -10, "You can add this workout to the end of any of the other workouts. It is optional.", "And Optional" },
-                    { -9, "The two workouts are interchangeable. Choose the ONE that fits your schedule.", "Or" },
-                    { -8, "7SF: 6X800 means to perform a track workout of six 800 meter repeats.", "Short fast run" },
-                    { -7, "7(5-1-1) means go easy for 5 miles, 1 mile at long fast pace, 1 mile cool down.", "Long Fast Run" },
-                    { -6, "8G (4-3-1) means go easy for 4 miles, 3 miles at goal pace, 1 mile cool down.", "Goal Pace Run" },
-                    { -5, "Find some hills on your route and stay relaxed on the uphills.", "Hilly Run" },
-                    { -4, "After 2 mile warm-up (very relaxed effort), settle into conversation effort", "Long Run" },
-                    { -3, "After 2 mile warm-up (very relaxed effort), settle into conversation effort.", "Semi-Long Run" },
-                    { -2, "Very relaxed effort over flat terrain (track or trail or walk the hills on your favorite route)", "Recovery Run" },
-                    { -1, "Non-weight-bearing aerobic activities such as aqua-jogging, swimming, or cycling. Be sure to perform them at conversation effort for 20-40 minutes.", "Cross-training" }
+                    { 1, "Non-weight-bearing aerobic activities such as aqua-jogging, swimming, or cycling. Be sure to perform them at conversation effort for 20-40 minutes.", "Cross-training" },
+                    { 2, "Very relaxed effort over flat terrain (track or trail or walk the hills on your favorite route)", "Recovery Run" },
+                    { 3, "After 2 mile warm-up (very relaxed effort), settle into conversation effort.", "Semi-Long Run" },
+                    { 4, "After 2 mile warm-up (very relaxed effort), settle into conversation effort", "Long Run" },
+                    { 5, "Find some hills on your route and stay relaxed on the uphills.", "Hilly Run" },
+                    { 6, "8G (4-3-1) means go easy for 4 miles, 3 miles at goal pace, 1 mile cool down.", "Goal Pace Run" },
+                    { 7, "7(5-1-1) means go easy for 5 miles, 1 mile at long fast pace, 1 mile cool down.", "Long Fast Run" },
+                    { 8, "7SF: 6X800 means to perform a track workout of six 800 meter repeats.", "Short fast run" },
+                    { 9, "The two workouts are interchangeable. Choose the ONE that fits your schedule.", "Or" },
+                    { 10, "You can add this workout to the end of any of the other workouts. It is optional.", "And Optional" }
                 });
 
             migrationBuilder.InsertData(
@@ -347,11 +396,11 @@ namespace Runner.Application.Database.Migrations
                 columns: new[] { "id", "name" },
                 values: new object[,]
                 {
-                    { -5, "Recovery" },
-                    { -4, "Taper" },
-                    { -3, "Speed" },
-                    { -2, "Strength" },
-                    { -1, "Endurance" }
+                    { 1, "Endurance" },
+                    { 2, "Strength" },
+                    { 3, "Speed" },
+                    { 4, "Taper" },
+                    { 5, "Recovery" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -370,6 +419,12 @@ namespace Runner.Application.Database.Migrations
                 name: "ix_journal_notes_user_id",
                 table: "journal_notes",
                 column: "user_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_roles_name",
+                table: "roles",
+                column: "name",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "ix_run_types_name",
@@ -419,6 +474,16 @@ namespace Runner.Application.Database.Migrations
                 column: "user_id");
 
             migrationBuilder.CreateIndex(
+                name: "ix_user_roles_role_id",
+                table: "user_roles",
+                column: "role_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_user_roles_user_id",
+                table: "user_roles",
+                column: "user_id");
+
+            migrationBuilder.CreateIndex(
                 name: "ix_user_run_entries_user_schedule_id",
                 table: "user_run_entries",
                 column: "user_schedule_id");
@@ -442,6 +507,12 @@ namespace Runner.Application.Database.Migrations
                 name: "ix_user_schedules_user_id",
                 table: "user_schedules",
                 column: "user_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_users_email",
+                table: "users",
+                column: "email",
+                unique: true);
         }
 
         /// <inheritdoc />
@@ -454,10 +525,16 @@ namespace Runner.Application.Database.Migrations
                 name: "template_run_run_types");
 
             migrationBuilder.DropTable(
+                name: "user_roles");
+
+            migrationBuilder.DropTable(
                 name: "user_run_entry_run_type");
 
             migrationBuilder.DropTable(
                 name: "template_runs");
+
+            migrationBuilder.DropTable(
+                name: "roles");
 
             migrationBuilder.DropTable(
                 name: "run_types");
@@ -483,24 +560,8 @@ namespace Runner.Application.Database.Migrations
             migrationBuilder.DropTable(
                 name: "goals");
 
-            migrationBuilder.DeleteData(
-                table: "roles",
-                keyColumn: "id",
-                keyValue: -2);
-
-            migrationBuilder.DeleteData(
-                table: "roles",
-                keyColumn: "id",
-                keyValue: -1);
-
-            migrationBuilder.InsertData(
-                table: "roles",
-                columns: new[] { "id", "created_at", "name", "updated_at" },
-                values: new object[,]
-                {
-                    { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "User", null },
-                    { 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Admin", null }
-                });
+            migrationBuilder.DropTable(
+                name: "users");
         }
     }
 }
