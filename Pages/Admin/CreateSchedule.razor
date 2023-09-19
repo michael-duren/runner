@@ -1,4 +1,5 @@
 @attribute [Route(Routes.CreateSchedule)]
+@using Runner.Pages.Admin.Components
 
 <AdminLayout>
     <ChildContent>
@@ -84,6 +85,7 @@
                 @* Write the body here, for each week create a row of 7 days *@
                 @for (int j = 0; j < NewSchedule.Weeks * 7; j++)
                 {
+                    var currentDayNum = j % 7 + 1;
                     var currentWeekNum = j / 7 + 1;
                     @if (j % 7 == 0)
                     {
@@ -91,21 +93,43 @@
                             <div>
                                 @($"{j / 7 + 1}")
                             </div>
-                            @* <div class="mt-2"> *@
-                            @*     Phase *@
-                            @* </div> *@
                         </div>
                     }
-                    <button type="button" class="@GetWeekRow(currentWeekNum) group flex items-center justify-center bg-gray-300 hover:bg-gray-600 dark:bg-slate-700 cursor-pointer h-8 sm:w-16 md:w-20 lg:w-24 xl:w-28 rounded p-2 col-span-1 hover:dark:bg-slate-900">
+                    <button type="button" @onclick="() => OpenModal(currentWeekNum, currentDayNum)" class="@GetWeekRow(currentWeekNum) group flex items-center justify-center bg-gray-300 hover:bg-gray-600 dark:bg-slate-700 cursor-pointer h-8 sm:w-16 md:w-20 lg:w-24 xl:w-28 rounded p-2 col-span-1 hover:dark:bg-slate-900">
                         <div class="opacity-0 group-hover:opacity-100 group-active:opacity-100 text-white text-xl">+</div>
                     </button>
                 }
             </div>
         </form>
+        <AddRunModal
+            selectedDayNumber="@SelectedDayNumber"
+            selectedWeekNumber="@SelectedWeekNumber"
+            isOpen="@IsOpen"
+            OnRunAdded="AddToList"
+            />
     </ChildContent>
 </AdminLayout>
 
 @code {
+    public int SelectedWeekNumber = 0;
+    public int SelectedDayNumber = 0;
+    public bool IsOpen = false;
+
+    private void OpenModal(int weekNumber, int dayNumber)
+    {
+        SelectedWeekNumber = weekNumber;
+        SelectedDayNumber = dayNumber;
+        IsOpen = true;
+    }
+
+    private void AddToList(TemplateRunEntry newTemplateRunEntry)
+    {
+        newTemplateRunEntry.WeekNumber = SelectedWeekNumber;
+        newTemplateRunEntry.DayNumber = SelectedDayNumber;
+
+        TemplateRuns.Add(newTemplateRunEntry);
+        IsOpen = false;
+    }
 
     private static string GetWeekRow(int weekNum)
     {

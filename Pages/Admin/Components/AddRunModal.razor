@@ -1,0 +1,39 @@
+@if (isOpen)
+{
+    <div class="fixed z-50 top-0 left-0 w-full h-full bg-black bg-opacity-40 flex items-center justify-center">
+        <div class="bg-white dark:bg-gray-700 rounded-lg p-8 w-11/12 md:w-1/2">
+            <h3 class="text-xl mb-4">Add a Run for Week @selectedWeekNumber Day @selectedDayNumber</h3>
+            <EditForm Model="_newRun" OnValidSubmit="AddRun">
+                <InputNumber @bind-Value="_newRun.Distance" class="..." placeholder="Distance" />
+                <InputCheckbox @bind-Value="_newRun.Race" class="..." /> Race
+                <!-- You can add more form fields for other properties of the `TemplateRunEntry` as necessary. -->
+
+                <button type="submit" class="mt-4 px-4 py-2 bg-green-500 text-white rounded">Add</button>
+            </EditForm>
+
+            <!-- Close button -->
+            <button @onclick="Close" class="mt-4 px-4 py-2 bg-red-500 text-white rounded">Close</button>
+        </div>
+    </div>
+}
+
+
+@code {
+    [Parameter] public int selectedWeekNumber { get; set; }
+    [Parameter] public int selectedDayNumber { get; set; }
+    [Parameter] public bool isOpen { get; set; }
+    [Parameter] public EventCallback<TemplateRunEntry> OnRunAdded { get; set; }
+    private TemplateRunEntry _newRun = new TemplateRunEntry();
+
+    private void AddRun()
+    {
+        OnRunAdded.InvokeAsync(_newRun);
+        Close();
+    }
+
+    private void Close()
+    {
+        isOpen = false;
+    }
+    
+}
