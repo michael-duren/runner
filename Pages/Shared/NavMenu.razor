@@ -3,7 +3,7 @@
 @inject IJSRuntime js
 @inject ILogger<NavMenu> logger
 
-<nav class="container w-full  mx-auto px-6" x-data="{ desktopMenuOpen: false, mobileMenuOpen: false }">
+<nav class=" w-full   px-6" x-data="{ desktopMenuOpen: false, mobileMenuOpen: false }">
     <div class="flex justify-between items-center">
         <ul class="flex gap-16 items-center">
             <li>
@@ -53,7 +53,13 @@
                 </Authorized>
                 <NotAuthorized>
                     <li class="px-2 py-4">
-                        <a class="text-lg font-medium text-indigo-600 hover:text-indigo-700" href="/login">Login</a>
+                        <a class="text-lg font-medium text-indigo-600 hover:text-indigo-700" href="/login">
+                            <MainButtonOutline>
+                                <ButtonContent>
+                                    Login
+                                </ButtonContent>
+                            </MainButtonOutline>
+                        </a>
                     </li>
                     <li class="px-2 py-4">
                         <a class="" href="/register">
@@ -97,6 +103,7 @@
 </nav>
 
 @code {
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)

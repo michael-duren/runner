@@ -2,10 +2,124 @@
 
 <AdminLayout>
     <ChildContent>
-        <h3>HELLO CREATE</h3>
+        <h3 class="text-2xl">New Running Schedule</h3>
+        <form class="">
+            <div class="flex gap-y-2 md:gap-y-0 flex-col md:flex-row items-center w-full gap-x-4">
+                @* Name *@
+                <div class="flex flex-col">
+                    <label class="block items-center mb-2 text-xs md:text-sm font-medium dark:text-white" for="name">
+                        Name
+                    </label>
+                    <input @bind="NewSchedule.ScheduleName" id="name" type="text" class="@InputTextStyle"/>
+                </div>
+                @* Goal  *@
+                <div class="flex flex-col">
+                    <label class="block mb-2 text-sm font-medium dark:text-white" for="goalId">
+                        <Required/> Goal
+                    </label>
+                    <div class="w-32">
+                        <select @bind="NewSchedule.GoalId" id="goalId" class="@SelectStyle">
+                            @foreach (var goal in Goals)
+                            {
+                                <option value="@goal.Id">@goal.GoalName</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                @* Difficulty  *@
+                <div class="flex flex-col">
+                    <label class="block mb-2 text-sm font-medium dark:text-white" for="difficultyId">
+                        <Required/> Difficulty
+                    </label>
+                    <div class="w-32">
+                        <select @bind="NewSchedule.DifficultyLevelId" id="goalId" class="@SelectStyle">
+                            @foreach (var difficulty in DifficultyLevels)
+                            {
+                                <option value="@difficulty.Id">@difficulty.Difficulty</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                @* Weeks  *@
+                <div class="flex flex-col">
+                    <label class="block mb-2 text-sm font-medium dark:text-white" for="difficultyId">
+                        <Required/> Weeks
+                    </label>
+                    <div class="w-32">
+                        <select @bind="NewSchedule.Weeks" id="goalId" class="@SelectStyle">
+                            @for (int i = 10; i < 30; i++)
+                            {
+                                <option value="@i">@i</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                @* Add Button  *@
+                <div class="flex items-center mt-8 h-full">
+                    <MainButton>
+                        <ButtonContent>
+                            Create
+                        </ButtonContent>
+                    </MainButton>
+                </div>
+                @* Cancel Button  *@
+                <div class="flex items-center mt-8 h-full">
+                    <MainButtonOutline>
+                        <ButtonContent>
+                            Cancel
+                        </ButtonContent>
+                    </MainButtonOutline>
+                </div>
+            </div>
+            @* Schedule  *@
+            <div class="grid grid-cols-week gap-x-4 gap-y-2 mt-8">
+                @* Write the header here *@
+                <div class="block mb-2 rounded-xl  py-2 text-xs font-light dark:text-white">Week</div>
+                @for (int i = 0; i < 7; i++)
+                {
+                    <div class="block mb-2 rounded-xl  p-2 text-xs font-light dark:text-white">
+                        @($"Day {i + 1}")
+                    </div>
+                }
+                @* Write the body here, for each week create a row of 7 days *@
+                @for (int j = 0; j < NewSchedule.Weeks * 7; j++)
+                {
+                    var currentWeekNum = j / 7 + 1;
+                    @if (j % 7 == 0)
+                    {
+                        <div class="@GetWeekRow(currentWeekNum)  block  rounded-xl  p-2 text-[0.7rem] font-light dark:text-white">
+                            <div>
+                                @($"{j / 7 + 1}")
+                            </div>
+                            @* <div class="mt-2"> *@
+                            @*     Phase *@
+                            @* </div> *@
+                        </div>
+                    }
+                    <button type="button" class="@GetWeekRow(currentWeekNum) group flex items-center justify-center bg-gray-300 hover:bg-gray-600 dark:bg-slate-700 cursor-pointer h-8 sm:w-16 md:w-20 lg:w-24 xl:w-28 rounded p-2 col-span-1 hover:dark:bg-slate-900">
+                        <div class="opacity-0 group-hover:opacity-100 group-active:opacity-100 text-white text-xl">+</div>
+                    </button>
+                }
+            </div>
+        </form>
     </ChildContent>
 </AdminLayout>
 
 @code {
-    
+
+    private static string GetWeekRow(int weekNum)
+    {
+        return weekNum % 4 == 0 ? "mb-4" : "";
+    }
+
+        private const string SelectStyle = "bg-gray-50 border border-gray-300 text-gray-900 " +
+                                           "text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 " +
+                                           "block w-full lg:p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 " +
+                                           "dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500";
+
+        private const string InputTextStyle = "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg " +
+                                              "focus:ring-blue-500 focus:border-blue-500 block w-full lg:p-2.5 dark:bg-gray-700 " +
+                                              "dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 " +
+                                              "dark:focus:border-blue-500";
+
 }

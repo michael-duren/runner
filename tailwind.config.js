@@ -3,7 +3,11 @@ module.exports = {
   content: ["**/*.razor", "**/*.cshtml", "**/*.html"],
   darkMode: 'class',
   theme: {
-    extend: {},
+    extend: {
+      gridTemplateColumns: {
+        'week': '2.5rem, repeat(7, minmax(0, 1fr))',
+      }
+    },
   },
   plugins: [
     require('@tailwindcss/forms')

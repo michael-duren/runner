@@ -1,0 +1,6 @@
+<select @attributes="AdditionalAttributes"></select>
+
+@code {
+   [Parameter(CaptureUnmatchedValues = true)] 
+   public Dictionary<string, object> AdditionalAttributes { get; set; } 
+}

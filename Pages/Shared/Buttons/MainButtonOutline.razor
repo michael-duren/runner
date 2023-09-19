@@ -1,0 +1,21 @@
+<button type="@ButtonType" class="shadow-xl dark:shadow dark:shadow-indigo-300 dark:hover:shadow-indigo-400 border-indigo-400 border-[2px] bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 dark:from-indigo-200 
+hover:from-indigo-500 dark:hover:from-indigo-100 hover:to-indigo-800 hover:dark:to-indigo-300 
+to-indigo-700 dark:to-indigo-400 active:scale-105 transition-all duration-300 font-medium rounded-3xl  px-5 py-2 text-center mr-2 mb-2"
+        @onclick="OnClick">
+    @if (ButtonContent is not null)
+    {
+        @ButtonContent
+    }
+</button>
+
+@code {
+    [Parameter]
+    public string? ButtonType { get; set; } = "button";
+
+    [Parameter]
+    public RenderFragment? ButtonContent { get; set; }
+
+    [Parameter]
+    public EventCallback OnClick { get; set; }
+
+}
