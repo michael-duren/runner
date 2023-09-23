@@ -1,29 +1,93 @@
-@if (isOpen)
-{
-    <div class="fixed z-50 top-0 left-0 w-full h-full bg-black bg-opacity-40 flex items-center justify-center">
-        <div class="bg-white dark:bg-gray-700 rounded-lg p-8 w-11/12 md:w-1/2">
-            <h3 class="text-xl mb-4">Add a Run for Week @selectedWeekNumber Day @selectedDayNumber</h3>
-            <EditForm Model="_newRun" OnValidSubmit="AddRun">
-                <InputNumber @bind-Value="_newRun.Distance" class="..." placeholder="Distance" />
-                <InputCheckbox @bind-Value="_newRun.Race" class="..." /> Race
-                <!-- You can add more form fields for other properties of the `TemplateRunEntry` as necessary. -->
+<dialog id="add_run_modal" class="modal">
+    <div class="modal-box dark:bg-gray-900">
+        <h3 class="text-xl mb-4 font-bold">Add a Run for Week @selectedWeekNumber Day @selectedDayNumber</h3>
+        <EditForm Model="_newRun" class="flex flex-col gap-8" OnValidSubmit="AddRun">
+            <div class="flex gap-8">
+                <div>
+                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300" for="distance">
+                        Distance
+                    </label>
+                    <InputNumber id="distance" min="1" max="100" @bind-Value="_newRun.Distance" class="input input-bordered input-sm " placeholder="Distance"/>
+                </div>
+                <div>
+                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300" for="race">
+                        Race ?
+                    </label>
+                    <InputCheckbox id="race" @bind-Value="_newRun.Race" class="checkbox checkbox-primary"/>
+                </div>
 
-                <button type="submit" class="mt-4 px-4 py-2 bg-green-500 text-white rounded">Add</button>
-            </EditForm>
+            </div>
+            <div class="flex gap-8">
+                <div>
+                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300" for="type">
+                        Run Type (select up to 3)
+                    </label>
+                    <div class="flex flex-wrap gap-4">
+                        @foreach (var type in RunTypes)
+                        {
+                            <button type="button"
+                                    @onclick="() => ToggleRunType(type.Id)"
+                                    class="px-3 py-2   rounded-xl cursor-pointer shadow-md dark:shadow-blue-500 
+                                     @(selectedRunTypes.Contains(type.Id) ? "bg-indigo-500 hover:bg-indigo-600 text-white" : "bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-950")">
+                                @type.Name
+                            </button>
+                        }
+                    </div>
+                </div>
+            </div>
+            <!-- You can add more form fields for other properties of the `TemplateRunEntry` as necessary. -->
 
-            <!-- Close button -->
-            <button @onclick="Close" class="mt-4 px-4 py-2 bg-red-500 text-white rounded">Close</button>
-        </div>
+            <div class="flex gap-8 items-center mt-8">
+                <button type="submit" class="btn btn-primary">Add</button>
+
+                <div class="modal-action m-0 p-0">
+                    <form method="dialog">
+                        <!-- Close button -->
+                        <button @onclick="Close" class="btn btn-error-content">Close</button>
+                    </form>
+                </div>
+            </div>
+        </EditForm>
+
     </div>
-}
+</dialog>
 
 
 @code {
-    [Parameter] public int selectedWeekNumber { get; set; }
-    [Parameter] public int selectedDayNumber { get; set; }
-    [Parameter] public bool isOpen { get; set; }
-    [Parameter] public EventCallback<TemplateRunEntry> OnRunAdded { get; set; }
+
+    [Parameter]
+    public int selectedWeekNumber { get; set; }
+
+    [Parameter]
+    public List<RunType> RunTypes { get; set; }
+
+    [Parameter]
+    public List<SchedulePhase> SchedulePhases { get; set; }
+
+    [Parameter]
+    public int selectedDayNumber { get; set; }
+
+    [Parameter]
+    public bool isOpen { get; set; }
+
+    [Parameter]
+    public EventCallback<TemplateRunEntry> OnRunAdded { get; set; }
+
     private TemplateRunEntry _newRun = new TemplateRunEntry();
+
+    private List<int> selectedRunTypes { get; set; } = new List<int>();
+
+    private void ToggleRunType(int runTypeId)
+    {
+        if (selectedRunTypes.Contains(runTypeId))
+        {
+            selectedRunTypes.Remove(runTypeId);
+        }
+        else if (selectedRunTypes.Count < 3)
+        {
+            selectedRunTypes.Add(runTypeId);
+        }
+    }
 
     private void AddRun()
     {
@@ -35,5 +99,5 @@
     {
         isOpen = false;
     }
-    
+
 }

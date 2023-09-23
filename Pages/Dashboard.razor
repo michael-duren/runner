@@ -7,18 +7,18 @@
 <div class="flex flex-col gap-y-8 w-full">
 
     <div class="flex flex-col gap-y-4">
-        <h1 class="text-2xl text-gray-600 dark:text-slate-300 font-bold ">
+        <h1 class="text-2xl text-gray-600 dark:text-gray-300 font-bold ">
             User Dashboard
         </h1>
         <div>
-            <p class="text-gray-600 dark:text-slate-500">
+            <p class="text-gray-600 dark:text-gray-500">
                 Welcome to your dashboard. Here you can view your runs, goals, and other information.
             </p>
         </div>
     </div>
-    <div class="grid flex-1 grid-cols-12 w-full h-full text-gray-600 dark:text-slate-300  mb-10">
+    <div class="grid flex-1 grid-cols-12 w-full h-full text-gray-600 dark:text-gray-300  mb-10">
         <aside class="col-span-3 flex flex-col   p-4">
-            <div class="flex items-center flex-col lg:flex-row border-b-2 pb-6 dark:border-slate-700 border-slate-300 gap-y-4 lg:gap-y-0  lg:gap-x-8">
+            <div class="flex items-center flex-col lg:flex-row border-b-2 pb-6 dark:border-gray-700 border-gray-300 gap-y-4 lg:gap-y-0  lg:gap-x-8">
                 <div class="text-xl md:text-2xl lg:text-3xl rounded-full shadow-xl flex bg-gradient-to-r from-indigo-500 to-indigo-800 p-4 md:p-6 lg:p-8  text-white">
                     <i class="fa-solid fa-user-large"></i>
                 </div>
@@ -28,7 +28,7 @@
                 @foreach (var link in Links)
                 {
                     <a href="@link.Url">
-                        <button class="flex gap-2 transition-all duration-300 hover:text-gray-900 hover:dark:text-slate-200 dark:text-gray-400 items-center">
+                        <button class="flex gap-2 transition-all duration-300 hover:text-gray-900 hover:dark:text-gray-200 dark:text-gray-400 items-center">
                             <i class="@link.Icon"></i>
                             <div>
                                 @link.Label
@@ -38,7 +38,7 @@
                 }
             </div>
         </aside>
-        <section class=" flex col-span-9  flex-col h-full text-gray-600 dark:text-slate-300  mb-10">
+        <section class=" flex col-span-9  flex-col h-full text-gray-600 dark:text-gray-300  mb-10">
 
             <div class="grid grid-rows-3 gap-y-8  h-full rounded-lg w-full my-12 p-6">
                 @* // TODO: Add a new run button  *@
@@ -47,8 +47,8 @@
                     <div>
                         <h2 class="text-xl  font-semibold">Upcoming Runs</h2>
                     </div>
-                    <div class="flex flex-col text-sm h-full shadow-xl dark:shadow-md dark:shadow-slate-800 bg-white dark:bg-slate-800 p-6 rounded-lg gap-4">
-                        <p class="text-gray-600 dark:text-slate-400">
+                    <div class="flex flex-col text-sm h-full shadow-xl dark:shadow-md dark:shadow-indigo-500 bg-white dark:bg-gray-900 p-6 rounded-lg gap-4">
+                        <p class="text-gray-600 dark:text-gray-400">
                             No runs yet. Get started by creating a new run.
                         </p>
                     </div>
@@ -58,8 +58,8 @@
                     <div>
                         <h2 class="text-xl  font-semibold">Previous Runs</h2>
                     </div>
-                    <div class="flex flex-col text-sm h-full shadow-xl dark:shadow-md dark:shadow-slate-800 bg-white dark:bg-slate-800 p-6 rounded-lg gap-4">
-                        <p class="text-gray-600 dark:text-slate-400">
+                    <div class="flex flex-col text-sm h-full shadow-xl dark:shadow-md dark:shadow-indigo-500 bg-white dark:bg-gray-900 p-6 rounded-lg gap-4">
+                        <p class="text-gray-600 dark:text-gray-400">
                             No runs yet. Get started by creating a new run.
                         </p>
                     </div>
@@ -69,8 +69,8 @@
                     <div>
                         <h2 class="text-xl font-semibold">Goals</h2>
                     </div>
-                    <div class="flex flex-col text-sm h-full shadow-xl dark:shadow-md dark:shadow-slate-800 bg-white dark:bg-slate-800 p-6 rounded-lg gap-4">
-                        <p class="text-gray-600 dark:text-slate-400">
+                    <div class="flex flex-col text-sm h-full shadow-xl dark:shadow-md dark:shadow-indigo-500 bg-white dark:bg-gray-900 p-6 rounded-lg gap-4">
+                        <p class="text-gray-600 dark:text-gray-400">
                             No Goals yet. Get started by creating a new goal.
                         </p>
                     </div>

@@ -1,8 +1,10 @@
 window.setDarkMode = (isDarkMode) => {
   if (isDarkMode) {
     document.body.classList.add("dark");
+    document.body.dataset.theme = "dark";
   } else {
     document.body.classList.remove("dark");
+    document.body.dataset.theme = "light";
   }
 };
 
