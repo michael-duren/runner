@@ -98,13 +98,21 @@
         {
             OnRunAdded.InvokeAsync(_newRun);
             JSRuntime.InvokeVoidAsync("closeModal", "add_run_modal");
+            ResetForm();
         }
         catch (Exception e)
         {
             Logger.LogError(e.Message);
             Console.WriteLine(e);
+            ResetForm();
             throw;
         }
+    }
+
+    private void ResetForm()
+    {
+        _newRun = new TemplateRunEntry();
+        selectedRunTypes.Clear();
     }
 
 }

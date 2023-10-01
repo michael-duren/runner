@@ -40,10 +40,11 @@ public partial class CreateSchedule
         var existingEntry = TemplateRuns.FirstOrDefault(run =>
             run.WeekNumber == newTemplateRunEntry.WeekNumber && run.DayNumber == newTemplateRunEntry.DayNumber);
 
-        if (existingEntry is not null)
+        if (existingEntry is null)
         {
             TemplateRuns.Add(newTemplateRunEntry);
             Logger.LogInformation("HELLO FROM CREATE SCHEDULE");
+            StateHasChanged();
         }
 
         // logging
