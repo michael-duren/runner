@@ -88,6 +88,10 @@
                 {
                     var currentDayNum = j % 7 + 1;
                     var currentWeekNum = j / 7 + 1;
+                    var hasRun = TemplateRuns.Any(run => run.DayNumber == currentDayNum && run.WeekNumber == currentWeekNum);
+                    var buttonStyle = hasRun ? 
+                        "bg-blue-500 hover:bg-blue-600 dark:bg-blue-900 hover:dark:bg-blue-950" : 
+                        "bg-gray-300 hover:bg-gray-600 dark:bg-gray-900 hover:dark:bg-gray-950";
                     @if (j % 7 == 0)
                     {
                         <div class="@GetWeekRow(currentWeekNum)  block  rounded-xl  p-2 text-[0.7rem] font-light dark:text-white">
@@ -96,10 +100,12 @@
                             </div>
                         </div>
                     }
-                    <button type="button" @onclick="() => OpenModal(currentWeekNum, currentDayNum)" class="@GetWeekRow(currentWeekNum) 
-                        group flex items-center justify-center bg-gray-300 
-                        hover:bg-gray-600 dark:bg-gray-900 dark:shadow-sm dark:shadow-blue-500  cursor-pointer h-8 sm:w-16 md:w-20 
-                        lg:w-24 xl:w-28 rounded p-2 col-span-1 hover:dark:bg-gray-950">
+                    <button type="button" @onclick="() => OpenModal(currentWeekNum, currentDayNum)" class="
+                        @GetWeekRow(currentWeekNum) 
+                        @buttonStyle
+                        group flex items-center justify-center  
+                         dark:shadow-sm dark:shadow-blue-500  cursor-pointer h-8 sm:w-16 md:w-20 
+                        lg:w-24 xl:w-28 rounded p-2 col-span-1 ">
                         <div class="opacity-0 group-hover:opacity-100 group-active:opacity-100 text-white text-xl">+</div>
                     </button>
                 }
@@ -108,7 +114,6 @@
         <AddRunModal
             selectedDayNumber="@SelectedDayNumber"
             selectedWeekNumber="@SelectedWeekNumber"
-            isOpen="@IsOpen"
             OnRunAdded="AddToList"
             SchedulePhases="SchedulePhases"
             RunTypes="RunTypes"/>
@@ -116,6 +121,7 @@
 </AdminLayout>
 
 @code {
+
         private const string SelectStyle = "bg-gray-50 border border-gray-300 text-gray-900 " +
                                            "text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 " +
                                            "block w-full lg:p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 " +
@@ -125,4 +131,5 @@
                                               "focus:ring-blue-500 focus:border-blue-500 block w-full lg:p-2.5 dark:bg-gray-900 " +
                                               "dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 " +
                                               "dark:focus:border-blue-500";
+
 }

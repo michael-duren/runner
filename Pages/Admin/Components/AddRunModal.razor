@@ -13,7 +13,7 @@
                     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300" for="race">
                         Race ?
                     </label>
-                    <InputCheckbox id="race" @bind-Value="_newRun.Race" class="checkbox checkbox-primary"/>
+                    <InputCheckbox id="race" @bind-Value="_newRun.Race" class="checkbox dark:bg-gray-600 checkbox-primary"/>
                 </div>
 
             </div>
@@ -38,12 +38,12 @@
             <!-- You can add more form fields for other properties of the `TemplateRunEntry` as necessary. -->
 
             <div class="flex gap-8 items-center mt-8">
-                <button type="submit" class="btn btn-primary">Add</button>
+                <button @onclick="AddRun" type="submit" class="btn btn-primary">Add</button>
 
                 <div class="modal-action m-0 p-0">
                     <form method="dialog">
                         <!-- Close button -->
-                        <button @onclick="Close" class="btn btn-error-content">Close</button>
+                        <button class="btn btn-error-content">Close</button>
                     </form>
                 </div>
             </div>
@@ -68,10 +68,13 @@
     public int selectedDayNumber { get; set; }
 
     [Parameter]
-    public bool isOpen { get; set; }
-
-    [Parameter]
     public EventCallback<TemplateRunEntry> OnRunAdded { get; set; }
+
+    [Inject]
+    private ILogger<AddRunModal> Logger { get; set; }
+
+    [Inject]
+    private IJSRuntime JSRuntime { get; set; }
 
     private TemplateRunEntry _newRun = new TemplateRunEntry();
 
@@ -91,13 +94,25 @@
 
     private void AddRun()
     {
-        OnRunAdded.InvokeAsync(_newRun);
-        Close();
+        try
+        {
+            OnRunAdded.InvokeAsync(_newRun);
+            JSRuntime.InvokeVoidAsync("closeModal", "add_run_modal");
+            ResetForm();
+        }
+        catch (Exception e)
+        {
+            Logger.LogError(e.Message);
+            Console.WriteLine(e);
+            ResetForm();
+            throw;
+        }
     }
 
-    private void Close()
+    private void ResetForm()
     {
-        isOpen = false;
+        _newRun = new TemplateRunEntry();
+        selectedRunTypes.Clear();
     }
 
 }
