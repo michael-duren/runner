@@ -9,6 +9,7 @@ namespace Runner.Pages.Admin;
 public partial class CreateSchedule
 {
     [Inject] private DatabaseContext Db { get; set; } = null!;
+    [Inject] private ILogger<CreateSchedule> Logger { get; set; }
 
     private TemplateSchedule NewSchedule { get; set; } = new TemplateSchedule();
     private List<Goal> Goals { get; set; } = new List<Goal>();
@@ -21,13 +22,12 @@ public partial class CreateSchedule
 
     public int SelectedWeekNumber = 0;
     public int SelectedDayNumber = 0;
-    public bool IsOpen = false;
+
 
     private void OpenModal(int weekNumber, int dayNumber)
     {
         SelectedWeekNumber = weekNumber;
         SelectedDayNumber = dayNumber;
-        IsOpen = true;
         JSRuntime.InvokeVoidAsync("openModal", "add_run_modal");
     }
 
@@ -36,8 +36,24 @@ public partial class CreateSchedule
         newTemplateRunEntry.WeekNumber = SelectedWeekNumber;
         newTemplateRunEntry.DayNumber = SelectedDayNumber;
 
-        TemplateRuns.Add(newTemplateRunEntry);
-        IsOpen = false;
+        // check template runs for existing entry on same day and week
+        var existingEntry = TemplateRuns.FirstOrDefault(run =>
+            run.WeekNumber == newTemplateRunEntry.WeekNumber && run.DayNumber == newTemplateRunEntry.DayNumber);
+
+        if (existingEntry is not null)
+        {
+            TemplateRuns.Add(newTemplateRunEntry);
+            Logger.LogInformation("HELLO FROM CREATE SCHEDULE");
+        }
+
+        // logging
+        Logger.LogInformation($"TOTAL RUNS: {TemplateRuns.Count()}");
+        TemplateRuns.ForEach(run =>
+        {
+            Logger.LogInformation($"Distance: {run.Distance.ToString()}");
+            Logger.LogInformation($"Day Num: {run.DayNumber}");
+            Logger.LogInformation($"Week Num: {run.WeekNumber}");
+        });
     }
 
     private static string GetWeekRow(int weekNum)

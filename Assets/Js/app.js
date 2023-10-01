@@ -6,6 +6,12 @@ window.openModal = (id) => {
   console.log("CLICKED")
 }
 
+window.closeModal = (id) => {
+  const modal = document.getElementById(id)
+  modal.close();
+  console.log("CLICKED")
+}
+
 window.Alpine = Alpine
 
 Alpine.start()
